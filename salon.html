@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:#f7b6c8;
+}
+
+#welcomeScreen{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:100;
+    cursor:pointer;
+    background:#ffd6e2;
+    transition:
+        opacity 0.6s ease,
+        transform 0.6s ease;
+}
+
+#welcomeImage{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:0.35s;
+}
+
+#welcomeScreen:hover #welcomeImage{
+    transform:scale(1.015);
+    filter:brightness(1.04);
+}
+
+#welcomeScreen.hide{
+    opacity:0;
+    transform:scale(1.05);
+    pointer-events:none;
+}
+
+#game{
+    position:relative;
+    width:100%;
+    height:100%;
+
+    background-image:
+        linear-gradient(
+            rgba(255,190,210,0.05),
+            rgba(255,190,210,0.05)
+        ),
+        url("./salon.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+
+#game::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:35%;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(255,190,210,0.28),
+            rgba(255,255,255,0)
+        );
+
+    pointer-events:none;
+}
+
+#customerArea{
+    position:absolute;
+    left:50%;
+    top:56%;
+    transform:translate(-50%,-50%);
+    width:620px;
+    height:760px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:3;
+}
+
+#customer{
+    width:100%;
+    height:auto;
+    object-fit:contain;
+    filter:
+        drop-shadow(
+            0 12px 18px
+            rgba(80,30,50,0.25)
+        );
+    transition:0.25s;
+}
+
+#tools{
+    position:absolute;
+    left:50%;
+    bottom:28px;
+    transform:translateX(-50%);
+    z-index:6;
+    display:flex;
+    gap:14px;
+    padding:15px 24px 13px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,250,252,0.98),
+            rgba(255,223,233,0.96)
+        );
+
+    border-radius:38px;
+    border:3px solid rgba(255,255,255,0.95);
+
+    box-shadow:
+        0 10px 25px rgba(95,40,60,0.25),
+        inset 0 1px 6px rgba(255,255,255,0.9);
+}
+
+.toolGroup{
+    text-align:center;
+}
+
+.toolBox{
+    width:92px;
+    height:92px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffd5e1,
+            #f5a7bd
+        );
+
+    border:4px solid white;
+    cursor:pointer;
+    transition:0.2s;
+
+    box-shadow:
+        0 5px 12px rgba(100,40,65,0.18),
+        inset 0 3px 7px rgba(255,255,255,0.65);
+}
+
+.toolBox:hover{
+    transform:translateY(-8px) scale(1.08);
+
+    box-shadow:
+        0 10px 18px rgba(100,40,65,0.28),
+        0 0 15px rgba(255,150,185,0.7);
+}
+
+.toolBox.active{
+    background:
+        linear-gradient(
+            145deg,
+            #ffc1d3,
+            #ff86aa
+        );
+
+    box-shadow:
+        0 0 0 4px white,
+        0 0 22px #ff80a5;
+}
+
+.tool{
+    max-width:70px;
+    max-height:70px;
+    object-fit:contain;
+}
+
+.toolName{
+    margin-top:6px;
+    color:#6b3649;
+    font-size:13px;
+    font-weight:bold;
+}
+
+#reset{
+    position:absolute;
+    top:28px;
+    right:35px;
+    z-index:7;
+    padding:13px 28px;
+    border:3px solid white;
+    border-radius:28px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ff93b2,
+            #e85d88
+        );
+
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+
+    box-shadow:
+        0 7px 18px rgba(110,40,65,0.28);
+
+    transition:0.2s;
+}
+
+#reset:hover{
+    transform:scale(1.08);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="welcomeScreen">
+    <img src="./welcome.png" id="welcomeImage">
+</div>
+
+<div id="game">
+
+    <div id="customerArea">
+        <img src="./1customer.png" id="customer">
+    </div>
+
+    <div id="tools">
+
+        <div class="toolGroup">
+            <div class="toolBox" id="sprayBox">
+                <img src="./2spray.png" class="tool">
+            </div>
+            <div class="toolName">Spray</div>
+        </div>
+
+        <div class="toolGroup">
+            <div class="toolBox" id="scissorsBox">
+                <img src="./3scissors.png" class="tool">
+            </div>
+            <div class="toolName">Scissors</div>
+        </div>
+
+        <div class="toolGroup">
+            <div class="toolBox" id="clipperBox">
+                <img src="./4clipper.png" class="tool">
+            </div>
+            <div class="toolName">Clipper</div>
+        </div>
+
+        <div class="toolGroup">
+            <div class="toolBox" id="dryerBox">
+                <img src="./5dryer.png" class="tool">
+            </div>
+            <div class="toolName">Dryer</div>
+        </div>
+
+        <div class="toolGroup">
+            <div class="toolBox" id="ironBox">
+                <img src="./6iron.png" class="tool">
+            </div>
+            <div class="toolName">Iron</div>
+        </div>
+
+    </div>
+
+    <audio src="./1cry.mp3" id="crySound"></audio>
+    <audio src="./2spray.mp3" id="spraySound"></audio>
+    <audio src="./3scissors.mp3" id="scissorsSound"></audio>
+    <audio src="./4clipper.mp3" id="clipperSound"></audio>
+    <audio src="./4angry.mp3" id="angrySound"></audio>
+    <audio src="./5dryer.mp3" id="dryerSound"></audio>
+    <audio src="./6iron.mp3" id="ironSound"></audio>
+    <audio src="./finslwow.mp3" id="wowSound"></audio>
+
+    <button id="reset">↻ RESET</button>
+
+</div>
+
+<script>
+
+welcomeScreen.onclick = function(){
+
+    welcomeScreen.classList.add("hide");
+
+    setTimeout(function(){
+
+        welcomeScreen.style.display = "none";
+
+    },600);
+
+}
+
+function stopAllSounds(){
+
+    crySound.pause();
+    spraySound.pause();
+    scissorsSound.pause();
+    clipperSound.pause();
+    angrySound.pause();
+    dryerSound.pause();
+    ironSound.pause();
+    wowSound.pause();
+
+    crySound.currentTime = 0;
+    spraySound.currentTime = 0;
+    scissorsSound.currentTime = 0;
+    clipperSound.currentTime = 0;
+    angrySound.currentTime = 0;
+    dryerSound.currentTime = 0;
+    ironSound.currentTime = 0;
+    wowSound.currentTime = 0;
+
+}
+
+function removeActive(){
+
+    sprayBox.classList.remove("active");
+    scissorsBox.classList.remove("active");
+    clipperBox.classList.remove("active");
+    dryerBox.classList.remove("active");
+    ironBox.classList.remove("active");
+
+}
+
+sprayBox.onclick = function(){
+
+    stopAllSounds();
+    removeActive();
+
+    sprayBox.classList.add("active");
+
+    customer.src = "./2wet.png";
+
+    spraySound.currentTime = 0;
+    spraySound.play();
+
+}
+
+sprayBox.ondblclick = function(){
+
+    spraySound.pause();
+    spraySound.currentTime = 0;
+
+    sprayBox.classList.remove("active");
+
+}
+
+scissorsBox.onclick = function(){
+
+    stopAllSounds();
+    removeActive();
+
+    scissorsBox.classList.add("active");
+
+    customer.src = "./3cuting.png";
+
+    scissorsSound.currentTime = 0;
+    scissorsSound.play();
+
+}
+
+scissorsBox.ondblclick = function(){
+
+    scissorsSound.pause();
+    scissorsSound.currentTime = 0;
+
+    scissorsBox.classList.remove("active");
+
+}
+
+clipperBox.onclick = function(){
+
+    stopAllSounds();
+    removeActive();
+
+    clipperBox.classList.add("active");
+
+    customer.src = "./4kachal.png";
+
+    clipperSound.currentTime = 0;
+    angrySound.currentTime = 0;
+
+    clipperSound.play();
+    angrySound.play();
+
+}
+
+clipperBox.ondblclick = function(){
+
+    clipperSound.pause();
+    angrySound.pause();
+
+    clipperSound.currentTime = 0;
+    angrySound.currentTime = 0;
+
+    clipperBox.classList.remove("active");
+
+}
+
+dryerBox.onclick = function(){
+
+    stopAllSounds();
+    removeActive();
+
+    dryerBox.classList.add("active");
+
+    customer.src = "./5dry.png";
+
+    dryerSound.currentTime = 0;
+    dryerSound.play();
+
+}
+
+dryerBox.ondblclick = function(){
+
+    dryerSound.pause();
+    dryerSound.currentTime = 0;
+
+    dryerBox.classList.remove("active");
+
+}
+
+ironBox.onclick = function(){
+
+    stopAllSounds();
+    removeActive();
+
+    ironBox.classList.add("active");
+
+    customer.src = "./final.png";
+
+    ironSound.currentTime = 0;
+    wowSound.currentTime = 0;
+
+    ironSound.onended = function(){
+
+        wowSound.currentTime = 0;
+        wowSound.play();
+
+    };
+
+    ironSound.play();
+
+}
+
+ironBox.ondblclick = function(){
+
+    ironSound.pause();
+    wowSound.pause();
+
+    ironSound.currentTime = 0;
+    wowSound.currentTime = 0;
+
+    ironBox.classList.remove("active");
+
+}
+
+reset.onclick = function(){
+
+    stopAllSounds();
+    removeActive();
+
+    customer.src = "./1customer.png";
+
+    crySound.currentTime = 0;
+    crySound.play();
+
+}
+
+</script>
+
+</body>
+
+</html>
